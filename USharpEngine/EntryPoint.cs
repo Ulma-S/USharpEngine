@@ -3,17 +3,17 @@
 namespace USharpEngine {
     class EntryPoint {
         static void Main() {
-            Application.OnInitHandler += () => {
-                WindowSettings.Width = 1280;
-                WindowSettings.Height = 720;
+            Engine.OnInitHandler += () => {
+                WindowSettings.Width = 640;
+                WindowSettings.Height = 360;
                 WindowSettings.Name = "SampleGame";
             };
 
-            Application.OnExitHandler += () => {
+            Engine.OnExitHandler += () => {
                 Console.WriteLine("exit.");
             };
-            
-            Application.Run();
+
+            Engine.Run();
         }
     }
 }

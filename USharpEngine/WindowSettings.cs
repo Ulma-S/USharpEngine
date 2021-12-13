@@ -1,4 +1,6 @@
-﻿namespace USharpEngine {
+﻿using USharpEngine.Core;
+
+namespace USharpEngine {
     public static class WindowSettings {
         public static int Width = 640;
         public static int Height = 480;

@@ -1,7 +1,8 @@
 ﻿using System;
+using USharpEngine.Core;
 
 namespace USharpEngine {
-    public class Application {
+    public class Engine {
         private static Window window;
         public static event Action OnInitHandler;
         public static event Action OnExitHandler;
