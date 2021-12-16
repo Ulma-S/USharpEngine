@@ -7,7 +7,7 @@ namespace USharpEngine {
     public class Shader : IDisposable { 
         private readonly int m_handle;
         private bool m_disposedValue = false;
-        private string m_path = "../../../";
+        private string m_path = "../../../Shader/";
 
         public Shader(string vertexPath, string fragmentPath) {
             vertexPath = m_path + vertexPath;

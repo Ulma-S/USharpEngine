@@ -1,9 +1,9 @@
 ﻿namespace USharpEngine {
-    public class Transform : Component {
+    public class Transform {
+        public Vector3 position;
+        
         public Transform() {
-        }
-
-        public override void Update() {
+            position = Vector3.zero;
         }
     }
 }

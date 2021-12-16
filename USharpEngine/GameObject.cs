@@ -1,22 +1,43 @@
 ﻿using System.Collections.Generic;
+using USharpEngine.Core;
 
 namespace USharpEngine {
     public abstract class GameObject {
         private readonly List<Component> m_components = new List<Component>();
+        public IDrawable renderer { get; private set; }
+        public readonly Transform transform;
 
         protected GameObject() { 
-            AddComponent<Transform>();
+            transform = new Transform();
         }
+
+        public void Load() {
+            renderer.Load();
+            OnLoad();
+        }
+
+        protected abstract void OnLoad();
 
         public void Update() {
             foreach (var component in m_components) {
                 component.Update();
             }
-            UpdateGameObject();
+            OnUpdate();
         }
 
-        protected abstract void UpdateGameObject();
+        public void Render() {
+            renderer.Update();
+        }
 
+        protected abstract void OnUpdate();
+
+        public void Unload() {
+            OnUnload();
+            renderer.Unload();
+        }
+
+        protected abstract void OnUnload();
+        
         public void AddComponent<T>() where T : Component, new() {
             var comp = new T {
                 owner = this,
@@ -32,6 +53,10 @@ namespace USharpEngine {
                 }
             }
             return null;
+        }
+
+        protected void AddRenderer(IDrawable drawable) {
+            renderer = drawable;
         }
     }
 }

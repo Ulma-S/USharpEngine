@@ -9,16 +9,22 @@ namespace USharpEngine {
             currentScene.OnUpdate();
         }
 
-        public void ChangeScene(string sceneName) {
+        public static void Render() {
+            currentScene.OnRender();
+        }
+
+        public static void ChangeScene(string sceneName) {
             if (!scenes.ContainsKey(sceneName)) {
                 return;
             }
-            currentScene.OnExit();
+
+            currentScene?.OnExit();
             currentScene = scenes[sceneName];
             currentScene.OnEnter();
         }
 
-        public static void RegisterScene(string sceneName, Scene scene) {
+        public static void RegisterScene(Scene scene) {
+            var sceneName = scene.sceneName;
             if (scenes.ContainsKey(sceneName)) {
                 return;
             }

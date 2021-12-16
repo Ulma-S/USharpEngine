@@ -1,4 +1,5 @@
 ﻿using OpenTK.Graphics.OpenGL4;
+using USharpEngine.Core;
 
 namespace USharpEngine {
     public enum SpriteType {
@@ -7,24 +8,29 @@ namespace USharpEngine {
         Circle,
     }
     
-    public class Sprite : Component {
+    public class Sprite : IDrawable {
         private string m_fileName;
         public int drawOrder { get; set; } = 100;
-        private SpriteType m_type;
+        private readonly SpriteType m_type;
         private int m_vertexBufferObject;
         private int m_vertexArrayObject;
-        
+
+        public Shader shader { get; set; }
+
         private readonly float[] m_triangleVertices = {
             -0.5f, -0.5f, 0.0f,
              0.5f, -0.5f, 0.0f,
              0.0f,  0.5f, 0.0f,
         };
         
-        public Sprite(string fileName, SpriteType type) {
+        public Sprite(string fileName = "triangle", SpriteType type = SpriteType.Triangle, Shader shader = null) {
             m_fileName = fileName;
             m_type = type;
+            Load();
+        }
 
-            switch (type) {
+        public void Load() {
+            switch (m_type) {
                 case SpriteType.Triangle:
                     //vbo
                     m_vertexBufferObject = GL.GenBuffer();
@@ -54,11 +60,14 @@ namespace USharpEngine {
                 case SpriteType.Circle:
                     break;
             }
+            GL.UseProgram(0);
+            shader?.Use();
         }
 
-        public override void Update() {
-            GL.BindVertexArray(m_vertexArrayObject);
+        public void Update() {
+            shader?.Use();
             
+            GL.BindVertexArray(m_vertexArrayObject);
             switch (m_type) {
                 case SpriteType.Triangle:
                     GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
@@ -70,6 +79,12 @@ namespace USharpEngine {
                 case SpriteType.Circle:
                     break;
             }
+        }
+
+        public void Unload() {
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.DeleteBuffer(m_vertexBufferObject);
+            GL.DisableVertexAttribArray(0);
         }
     }
 }
